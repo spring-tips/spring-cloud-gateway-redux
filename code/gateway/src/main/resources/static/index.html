@@ -4,9 +4,9 @@
 <script>
 
     window.addEventListener('load', () => {
-        const ws = new WebSocket('ws://localhost:9292/customers.ws')
+        const ws = new WebSocket('ws://localhost:9292/new-customers.ws')
         ws.addEventListener('message', (m) => {
-            console.log('logging the new message', m);
+            console.log('logging the new message', m.data);
         })
     })
 
