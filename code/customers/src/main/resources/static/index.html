@@ -1,0 +1,12 @@
+<html>
+<script>
+    window.addEventListener('load', () => {
+        const ws = new WebSocket('ws://localhost:9191/ws/customers')
+        ws.addEventListener('open', () => {
+        })
+        ws.addEventListener('message', (message) => {
+            console.log('new message: ', message.data);
+        })
+    })
+</script>
+</html>
