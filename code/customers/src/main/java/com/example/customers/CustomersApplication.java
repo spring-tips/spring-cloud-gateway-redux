@@ -45,7 +45,7 @@ class WebSocketConfiguration {
                 var id = counter.incrementAndGet();
                 return new Customer(id, this.names[id % this.names.length]);
             }))
-            .delayElements(Duration.ofSeconds(1));
+            .delayElements(Duration.ofSeconds(3));
 
 
     @Bean
