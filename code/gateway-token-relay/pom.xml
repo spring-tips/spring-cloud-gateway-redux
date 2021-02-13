@@ -9,11 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
-	<artifactId>gateway</artifactId>
+	<artifactId>gateway-token-relay</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gateway</name>
-	<description>Demo project for Spring Boot</description>
-	<properties>
+ 	<properties>
 		<java.version>11</java.version>
 		<spring-cloud.version>2020.0.0</spring-cloud.version>
 	</properties>
