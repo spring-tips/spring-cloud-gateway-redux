@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
  * show hwo to create a simple RouteLocator
  * show the basic structure of one route with a filter or two
  * show http, ws
- *
+ * show actuator
  * Here are some of the URLs that work:
  *
  *

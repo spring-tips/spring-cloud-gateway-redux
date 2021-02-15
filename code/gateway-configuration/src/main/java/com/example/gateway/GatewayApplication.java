@@ -25,6 +25,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
  *
  * <LI> http://localhost:9292/o/3.json </LI>
  * <li> Hit the /actuator/refresh endpoint with <code>curl -XPOST http://localhost:8010/actuator/refresh </code> </li>
+ * <LI> Demonstrate creating a custom RouteLocator manually </LI>
+ * <LI> demonstrate using the YAML configuration format to describe a route </LI>
+ * <lI> Demonstrate using the Spring Cloud Config Server to store that route instead </lI>
+ * <LI> Introducing 8010/actuator/refresh</LI>
+ * <LI> Demonstrate listening for RefreshRoutesResultEvent as an ApplicationListener  then using the /refresh endpoint  </LI>
+ * <LI> Demonstrate using @RefreshScope  then using the /refresh endpoint </LI>
+ * <LI> Demonstrate changing config in the config server then using the /refresh endpoint</LI>
  */
 @Log4j2
 @SpringBootApplication
