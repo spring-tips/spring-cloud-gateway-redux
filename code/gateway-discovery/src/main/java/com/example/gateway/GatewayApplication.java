@@ -28,7 +28,6 @@ import reactor.core.publisher.Mono;
 @SpringBootApplication
 public class GatewayApplication {
 
-
     @Bean
     ApplicationListener<RefreshRoutesResultEvent> routesRefreshed() {
         return rre -> {

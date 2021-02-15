@@ -3,6 +3,7 @@ package com.example.gateway;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.PrincipalNameKeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -15,39 +16,35 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
-
 @Log4j2
 @SpringBootApplication
 public class GatewayApplication {
 
     @Bean
-    SecurityWebFilterChain authorization(ServerHttpSecurity http) {
-        return http
-                .authorizeExchange(ae -> ae.pathMatchers("/customers"))
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .httpBasic(Customizer.withDefaults())
-                .build();
+    RedisRateLimiter rrl() {
+        return new RedisRateLimiter(1,  1);
     }
 
     @Bean
-    MapReactiveUserDetailsService authentication() {
-        return new MapReactiveUserDetailsService(User.builder().username("jlong").password("pw").roles("USER").build());
+    KeyResolver pks() {
+        return new PrincipalNameKeyResolver();
     }
 
     @Bean
     RouteLocator gateway(RouteLocatorBuilder rlb) {
         return rlb
                 .routes()
-                .route(routeSpec -> routeSpec
-                        .path("/customers")
-                        .filters(fs -> fs
-                                .setPath("/customers")
-                                .requestRateLimiter(rlc -> rlc
-                                        .setRateLimiter(new RedisRateLimiter(5, 2))
-                                        .setKeyResolver(new PrincipalNameKeyResolver())
+                .route(routeSpec ->
+                        routeSpec
+                                .path("/hi")
+                                .filters(fs -> fs
+                                        .requestRateLimiter(rlc -> rlc
+                                                .setRateLimiter(rrl())
+                                                .setKeyResolver(pks())
+                                        )
+                                        .setPath("/hello")
                                 )
-                        )
-                        .uri("http://localhost:8080/")
+                                .uri("http://localhost:9191/")
                 )
                 .build();
     }
@@ -61,6 +58,22 @@ public class GatewayApplication {
 
 @Configuration
 class SecurityConfiguration {
+
+    @Bean
+    SecurityWebFilterChain authorization(ServerHttpSecurity http) {
+        return http
+                .authorizeExchange(ae ->
+                        ae.pathMatchers("/hi").authenticated()
+                )
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .httpBasic(Customizer.withDefaults())
+                .build();
+    }
+
+    @Bean
+    MapReactiveUserDetailsService authentication() {
+        return new MapReactiveUserDetailsService(User.withDefaultPasswordEncoder().username("jlong").password("pw").roles("USER").build());
+    }
 
 
 }

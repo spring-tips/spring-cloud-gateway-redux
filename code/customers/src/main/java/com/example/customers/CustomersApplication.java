@@ -14,7 +14,9 @@ import org.springframework.web.reactive.socket.WebSocketHandler;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
+import java.util.Calendar;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
@@ -91,10 +93,6 @@ class CustomerRestController {
         this.customers = customers;
     }
 
-    @GetMapping("/hello")
-    String hello (){
-        return "Hello, world";
-    }
 
     @GetMapping(
             value = "/customers",
@@ -103,4 +101,27 @@ class CustomerRestController {
     Flux<Customer> get() {
         return this.customers;
     }
+}
+
+// dont create this until the rate limiting section
+@RestController
+class RateLimitingRestController {
+
+    private final Map<Integer, AtomicInteger> secondToCount = new ConcurrentHashMap<>();
+    private final Calendar calendar = Calendar.getInstance();
+    private final Object monitor = new Object();
+
+    @GetMapping("/hello")
+    String hello() {
+        synchronized (this.calendar) {
+            var second = calendar.get(Calendar.SECOND);
+            secondToCount.putIfAbsent(second, new AtomicInteger(0));
+            var countForTheSecond = secondToCount.get(second).incrementAndGet();
+            System.out.println("there have been " + countForTheSecond + " attempts for the second " + second + '.');
+        }
+
+        // todo capture the current second and how many requests we've seen in this second
+        return "Hello, world";
+    }
+
 }
