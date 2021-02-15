@@ -16,6 +16,13 @@ import org.springframework.security.core.userdetails.MapReactiveUserDetailsServi
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
+/**
+ * Show security and the RedisRateLimiter
+ * Show the custom /hello endpoint @RestController in customers
+ * Show the deluge.sh script
+ * Show the return values in the http responses (429)
+ * Show the result of running `keys *` in `redis-cli` while requests are being thrown at the service 
+ */
 @Log4j2
 @SpringBootApplication
 public class GatewayApplication {
