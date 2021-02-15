@@ -13,6 +13,9 @@ import org.springframework.context.annotation.Bean;
 
 import com.baeldung.authserver.config.KeycloakServerProperties;
 
+/**
+ * This code came from this excellent <a href="https://www.baeldung.com/keycloak-embedded-in-spring-boot-app">article on the Baeldung blog</a>
+ */
 @SpringBootApplication(exclude = LiquibaseAutoConfiguration.class)
 @EnableConfigurationProperties(KeycloakServerProperties.class)
 public class AuthorizationServerApp {
