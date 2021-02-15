@@ -22,6 +22,7 @@
         <module>gateway-reliability</module>
         <module>gateway-basics</module>
         <module>registry</module>
+        <module>resource</module>
         <module>orders</module>
         <module>customers</module>
     </modules>
