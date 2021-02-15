@@ -91,6 +91,11 @@ class CustomerRestController {
         this.customers = customers;
     }
 
+    @GetMapping("/hello")
+    String hello (){
+        return "Hello, world";
+    }
+
     @GetMapping(
             value = "/customers",
             produces = MediaType.TEXT_EVENT_STREAM_VALUE

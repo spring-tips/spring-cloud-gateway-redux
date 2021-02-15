@@ -12,36 +12,16 @@
     <artifactId>root</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
-
-
     <modules>
-        <module>
-            gateway-ratelimiting
-        </module>
-        <module>
-            gateway-discovery
-        </module>
-        <module>
-            gateway-configuration
-        </module>
-        <module>
-            gateway-token-relay
-        </module>
-        <module>
-            gateway-reliability
-        </module>
-        <module>
-            gateway-basics
-        </module>
-        <module>
-            registry
-        </module>
-        <module>
-            orders
-        </module>
-        <module>
-            customers
-        </module>
-
+        <module>configuration-service</module>
+        <module>gateway-ratelimiting</module>
+        <module>gateway-discovery</module>
+        <module>gateway-configuration</module>
+        <module>gateway-token-relay</module>
+        <module>gateway-reliability</module>
+        <module>gateway-basics</module>
+        <module>registry</module>
+        <module>orders</module>
+        <module>customers</module>
     </modules>
 </project>
