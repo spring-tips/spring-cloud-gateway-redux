@@ -20,15 +20,9 @@ import reactor.core.publisher.Mono;
 /**
  * Here are some of the URLs that work:
  *
- * <LI> http://localhost:9292/customers/customers </LI>
- * <LI> http://localhost:9292/orders/orders/2 </LI>
- * <LI> http://localhost:9292/hello </LI>
- * <LI> http://localhost:9292/new-customers.ws </LI>
- * <LI> http://localhost:9292/index.html </LI>
- * <LI> http://localhost:9292/actuator/gateway </LI>
- * <LI> http://localhost:9292/actuator/metrics/spring.cloud.gateway.requests </LI>
- * <LI> http://localhost:9292/o/3.json </LI>
- * <LI> http://localhost:9292/twitter/@starbuxman </LI>
+ * <LI> http://localhost:9292/customers/customers to show the auto route creation </LI>
+ * <LI> http://localhost:9292/new-customers.ws to show manually doing client side loadbalancing </LI>
+
  */
 @Log4j2
 @SpringBootApplication
@@ -52,45 +46,10 @@ public class GatewayApplication {
     RouteLocator gateway(RouteLocatorBuilder rlb) {
         return rlb
                 .routes()
-                .route(routeSpec -> routeSpec.path("/hello").filters(fs -> fs.setPath("/guides")).uri("http://spring.io")) // http
                 .route(routeSpec -> routeSpec.path("/new-customers.ws").filters(fs -> fs.setPath("/ws/customers")).uri("lb://customers/")) // websockets
-                .route(rs -> rs
-                        .path("/twitter/@**")
-                        .filters(c -> c.rewritePath("/twitter/@(?<handle>.*)", "/${handle}"))
-                        .uri("http://twitter.com/")
-                )
                 .build();
     }
 
-    @Bean
-    RouteLocator customRouteLocator(RewritePathGatewayFilterFactory rewritePathGatewayFilterFactory) {
-
-        var rewritePathGatewayFilter = rewritePathGatewayFilterFactory
-                .apply(config -> config
-                        .setRegexp("\\/o\\/(?<segment>.*)\\.json")
-                        .setReplacement("/orders/${segment}")
-                );
-
-        var singleRoute = Route//
-                .async() //
-                .id("orders-json-to-orders") //
-                .asyncPredicate(request -> {
-                    var uri = request.getRequest().getURI();
-                    var path = uri.getPath();
-                    var match = path.contains("o/");
-                    log.debug("result for " + uri + '/' + path + " " + match);
-                    return Mono.just(match);
-                })
-                .filter(new OrderedGatewayFilter(rewritePathGatewayFilter, 0)) //
-                .filter(new OrderedGatewayFilter((exchange, chain) -> {
-                    log.info("new URI: " + exchange.getRequest().getURI());
-                    return chain.filter(exchange);
-                }, 1))
-                .uri("lb://orders")
-                .build();
-
-        return () -> Flux.just(singleRoute);//
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);

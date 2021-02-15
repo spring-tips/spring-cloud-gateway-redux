@@ -25,10 +25,8 @@ import reactor.core.publisher.Mono;
  * Here are some of the URLs that work:
  *
  *
- * <LI> http://localhost:9292/customers/customers </LI>
  * <LI> http://localhost:9292/orders/orders/2 </LI>
  * <LI> http://localhost:9292/hello </LI>
- * <LI> http://localhost:9292/new-customers.ws </LI>
  * <LI> http://localhost:9292/index.html </LI>
  * <LI> http://localhost:9292/actuator/gateway </LI>
  * <LI> http://localhost:9292/actuator/metrics/spring.cloud.gateway.requests </LI>
@@ -43,7 +41,6 @@ public class GatewayApplication {
         return rlb
                 .routes()
                 .route(routeSpec -> routeSpec.path("/hello").filters(fs -> fs.setPath("/guides")).uri("http://spring.io")) // http
-                .route(routeSpec -> routeSpec.path("/new-customers.ws").filters(fs -> fs.setPath("/ws/customers")).uri("lb://customers/")) // websockets
                 .route(rs -> rs
                         .path("/twitter/@**")
                         .filters(c -> c.rewritePath("/twitter/@(?<handle>.*)", "/${handle}"))
