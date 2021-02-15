@@ -56,7 +56,6 @@ public class GatewayApplication {
                 .build();
     }
 
-
     public static void main(String[] args) {
         SpringApplication.run(GatewayApplication.class, args);
     }
