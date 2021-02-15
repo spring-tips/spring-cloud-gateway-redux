@@ -22,7 +22,7 @@ public class GatewayApplication {
 
     @Bean
     RedisRateLimiter rrl() {
-        return new RedisRateLimiter(1,  1);
+        return new RedisRateLimiter(5,  10);
     }
 
     @Bean
