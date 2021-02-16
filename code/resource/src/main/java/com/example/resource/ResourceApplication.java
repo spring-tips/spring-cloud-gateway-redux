@@ -20,7 +20,6 @@ import java.util.Map;
  * <p>
  * Urls that work:
  * - we have a custom servlet context. so the URL is http://localhost:9090/resource-server-jwt/greetings
- * -
  */
 @SpringBootApplication
 public class ResourceApplication {
@@ -54,7 +53,6 @@ class GreetingsRestController {
     @GetMapping("/greetings")
     Map<String, String> hello(/*@AuthenticationPrincipal Authentication jwt*/) {
         return Collections.singletonMap("message", "Hello, world");
-//        return Collections.singletonMap("message", "Hello, " + jwt.getName());
     }
 
 }
