@@ -14,7 +14,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>configuration-service</module>
-        <module>gateway-ratelimiting</module>
         <module>gateway-discovery</module>
         <module>gateway-configuration</module>
         <module>gateway-token-relay</module>
